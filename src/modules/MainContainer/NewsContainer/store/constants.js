@@ -1,0 +1,2 @@
+export const SET_MAIN_NEWS = "SET_MAIN_NEWS";
+export const SET_STARTED_NEWS = "SET_STARTED_NEWS";

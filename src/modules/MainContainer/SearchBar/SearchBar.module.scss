@@ -1,0 +1,51 @@
+@import "utils/_variables";
+@import "utils/_functions";
+
+.root {
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    height: 60px;
+
+    input {
+        width: 100% !important;
+        font-size: 20px !important;
+        border-radius: 30px !important;
+        background: #fff !important;
+        height: 100%;
+    }
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: spacing(2) !important;
+    transform: translateY(-50%);
+}
+
+.submitBtn {
+    position: absolute;
+    right: -75px;
+    top: -1px;
+    background: $secondary-color;
+    font-size: 20px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    padding: 0 spacing(2);
+    line-height: 56px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.filter{
+    max-width: 200px;
+    text-align: center;
+    
+    input{
+        text-align: center;
+    }
+    option[selected]{
+        padding-left: 10px;
+    }
+}

@@ -1,0 +1,17 @@
+// In most cases we need only grid all other styles specific to design
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/transitions";
+
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities/borders";
+@import "~bootstrap/scss/utilities/display";
+@import "~bootstrap/scss/utilities/flex";
+@import "~bootstrap/scss/utilities/visibility";
+@import "~bootstrap/scss/utilities/sizing";
+@import "~bootstrap/scss/utilities/position";
+@import "~bootstrap/scss/utilities/overflow";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/nav";

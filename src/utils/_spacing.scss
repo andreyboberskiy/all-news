@@ -1,0 +1,68 @@
+@import "functions";
+@import "mixins";
+
+@for $i from 0 through 5 {
+    .p-#{$i} {
+        padding: spacing($i) !important;
+    }
+
+    .px-#{$i} {
+        @include px($i);
+    }
+
+    .py-#{$i} {
+        @include py($i);
+    }
+
+    .pt-#{$i} {
+        padding-top: spacing($i);
+    }
+
+    .pb-#{$i} {
+        padding-bottom: spacing($i);
+    }
+
+    .pl-#{$i} {
+        padding-left: spacing($i);
+    }
+
+    .pr-#{$i} {
+        padding-right: spacing($i);
+    }
+
+    .m-#{$i} {
+        margin: spacing($i) !important;
+    }
+
+    .mx-#{$i} {
+        @include mx($i);
+    }
+
+    .my-#{$i} {
+        @include my($i);
+    }
+
+    .mt-#{$i} {
+        margin-top: spacing($i);
+    }
+
+    .mb-#{$i} {
+        margin-bottom: spacing($i);
+    }
+
+    .ml-#{$i} {
+        margin-left: spacing($i);
+    }
+
+    .mr-#{$i} {
+        margin-right: spacing($i);
+    }
+
+    .fz-#{$i} {
+        font-size: spacing($i) !important;
+    }
+}
+
+.mt-auto {
+    margin-top: auto;
+}

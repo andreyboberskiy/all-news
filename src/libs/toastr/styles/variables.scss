@@ -1,0 +1,10 @@
+@import "utils/_variables";
+
+$toastr-bg: $error-color;
+
+$toastr-width: 200px !default;
+$successBgColor: $primary-color !default;
+$infoBgColor: $primary-color !default;
+$warningBgColor: $secondary-color !default;
+$errorBgColor: #ffb4b4 !default;
+$defaultSpace: 10px;

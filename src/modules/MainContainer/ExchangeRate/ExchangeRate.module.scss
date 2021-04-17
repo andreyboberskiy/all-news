@@ -1,0 +1,30 @@
+@import "utils/_variables";
+@import "utils/_functions";
+.root {
+    padding: 50px 0;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 10px 9px 34px 0px rgba(0, 0, 0, 0.75) !important;
+    color: #fff;
+    width: 430px;
+}
+.title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: spacing(3);
+}
+.body {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+}
+.row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0 20px;
+    &:nth-child(2n) {
+        background: rgba(50, 50, 50, 0.2);
+    }
+}
+.item {
+    font-size: 18px;
+    padding: spacing(1) spacing(3);
+}

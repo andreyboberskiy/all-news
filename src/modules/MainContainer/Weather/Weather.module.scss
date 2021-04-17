@@ -1,0 +1,36 @@
+@import "utils/_variables";
+@import "utils/_functions";
+
+.root {
+    padding: 50px 40px;
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 10px 9px 34px 0px rgba(0, 0, 0, 0.75) !important;
+    color: #fff;
+    width: 430px;
+}
+.title {
+    font-size: 24px;
+    text-align: center;
+
+    span {
+        color: $red;
+        font-weight: 500;
+    }
+}
+.body {
+    text-align: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.item {
+    font-size: 20px;
+    text-align: left;
+    margin: 0 auto;
+}
+.temp {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: spacing(2);
+}

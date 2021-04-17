@@ -1,0 +1,40 @@
+.root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    z-index: 999;
+
+    span {
+        position: relative;
+        height: 100%;
+        display: block;
+        width: 100%;
+        background-color: #26a69a;
+        border-radius: 2px;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            background-color: #acece6;
+            height: 100%;
+            width: 300px;
+            border-radius: 3px;
+            animation: loader 1.5s ease-in-out infinite;
+        }
+    }
+}
+
+@keyframes loader {
+    from {
+        left: -300px;
+        // transform: translateX(-100px);
+    }
+    to {
+        // transform: translateX();
+        left: 100%;
+    }
+}

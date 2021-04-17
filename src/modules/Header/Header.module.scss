@@ -1,0 +1,38 @@
+@import "utils/_variables";
+@import "utils/_functions";
+
+.root {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+    // padding: spacing(3) spacing(5);
+}
+.logo {
+    font-size: $font-size-logo;
+    font-family: $font-main;
+    width: 30%;
+    cursor: pointer;
+    span {
+        color: $red;
+    }
+}
+.title {
+    font-weight: 600;
+    font-size: $font-size-logo;
+    text-transform: uppercase;
+    text-align: center;
+}
+.settings {
+    font-size: $font-size-big;
+    width: 30%;
+    text-align: right;
+}
+.activeLink{
+    background: rgba(0,0,0,.3);
+}
+.fakePadding{
+    padding-bottom: 64px;
+}

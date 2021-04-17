@@ -1,0 +1,200 @@
+@import "utils/_variables";
+@import "utils/_functions";
+@import "utils/_mixins";
+@import "./variables.scss";
+@import "./animation.scss";
+//@import './confirm.scss';
+
+$text-color: #949494;
+
+body.toastr-confirm-active {
+    overflow: hidden;
+}
+
+.redux-toastr {
+    *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+    }
+
+    .top-left,
+    .top-right,
+    .top-center,
+    .bottom-left,
+    .bottom-right,
+    .bottom-center {
+        position: fixed;
+        z-index: 99999999;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .top-left,
+    .top-right,
+    .top-center {
+        top: 80px;
+    }
+
+    .top-right,
+    .bottom-right {
+        right: spacing(2);
+    }
+
+    .bottom-left,
+    .bottom-right,
+    .bottom-center {
+        bottom: spacing(3);
+    }
+
+    .top-left,
+    .bottom-left {
+        left: spacing(3);
+    }
+
+    .top-center,
+    .bottom-center {
+        left: 50%;
+        margin-left: -($toastr-width / 2);
+    }
+
+    .toastr {
+        background-color: #fff;
+        width: 100%;
+        max-width: 640px;
+        min-width: $toastr-width;
+        overflow: hidden;
+        margin: spacing(1) 0;
+        border-radius: 5px;
+        position: relative;
+        z-index: 2;
+        outline: none;
+        box-shadow: 10px 20px 60px rgba(0, 0, 0, 0.25);
+
+        &.rrt-success {
+            border-left: 3px solid $successBgColor;
+        }
+
+        &.rrt-info {
+            border-left: 3px solid $infoBgColor;
+        }
+
+        &.rrt-warning {
+            border-left: 3px solid $warningBgColor;
+        }
+
+        &.rrt-error {
+            border-left: 3px solid $errorBgColor;
+        }
+
+        > div {
+            min-height: 48px;
+            padding: spacing(2);
+            display: flex;
+        }
+
+        .toastr-icon {
+            margin-right: spacing(1.5);
+            color: black;
+            display: none;
+        }
+
+        .rrt-middle-container {
+            //flex: 1 1 auto;
+            align-self: center;
+            padding: 0 spacing(2);
+
+            .rrt-title {
+                @include font-title();
+                font-size: 20px;
+                line-height: 1.2;
+            }
+
+            .rrt-text {
+                font-size: $font-size-small;
+                line-height: 2;
+                font-style: italic;
+                color: $text-color;
+            }
+        }
+
+        .rrt-right-container {
+            margin-left: spacing(1);
+        }
+
+        .close-toastr {
+            @include circle(32);
+            background-color: red;
+            color: #fff;
+            cursor: pointer;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        &.rrt-message {
+            opacity: 1;
+
+            .rrt-title {
+                width: 90%;
+                height: 50px;
+                text-align: center;
+                overflow: hidden;
+                font-size: 1rem;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                line-height: 50px;
+                padding: 0 20px;
+            }
+
+            .rrt-text {
+                width: 100%;
+                max-height: 400px;
+                overflow: hidden;
+                overflow-y: auto;
+                padding: 15px;
+                font-size: 0.75rem;
+                margin-bottom: 20px;
+
+                img {
+                    display: block;
+                    margin: 10px auto;
+                    max-width: 100%;
+                }
+            }
+
+            .close-toastr {
+                height: 50px;
+            }
+        }
+
+        .rrt-progress-container {
+            height: 5px;
+            margin: 0 -20px -20px -60px;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+
+            .rrt-progressbar {
+                -webkit-border-radius: 0 0 0 4px;
+                -moz-border-radius: 0 0 0 4px;
+                border-radius: 0 0 0 4px;
+                height: 100%;
+            }
+        }
+    }
+
+    .toastr-attention {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+}

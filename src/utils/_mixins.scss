@@ -1,0 +1,49 @@
+@import 'functions';
+@import 'variables';
+
+@mixin mx($n) {
+  margin-left: spacing($n);
+  margin-right: spacing($n);
+}
+
+@mixin my($n) {
+  margin-top: spacing($n);
+  margin-bottom: spacing($n);
+}
+
+@mixin px($n) {
+  padding-left: spacing($n);
+  padding-right: spacing($n);
+}
+
+@mixin py($n) {
+  padding-top: spacing($n);
+  padding-bottom: spacing($n);
+}
+
+@mixin responsive-ratio($x, $y) {
+  position: relative;
+  $padding: unquote(($y / $x) * 100 + '%');
+  padding-top: $padding;
+}
+
+@mixin flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin circle($d) {
+  width: unquote($d + 'px');
+  height: unquote($d + 'px');
+  min-width: unquote($d + 'px');
+  min-height: unquote($d + 'px');
+  border: none;
+  border-radius: 50%;
+  @include flex-center();
+}
+
+@mixin font-title() {
+  font-family: $font-main;
+  letter-spacing: 0.07em;
+}

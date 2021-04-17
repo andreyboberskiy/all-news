@@ -1,0 +1,111 @@
+@import "utils/_variables";
+@import "utils/_functions";
+
+.root {
+    max-width: 300px;
+    width: 100%;
+    // cursor: pointer;
+}
+
+.title {
+    position: static !important;
+    font-size: 20px !important;
+    line-height: 24px !important;
+    font-weight: 600 !important;
+    max-height: 72px;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    overflow: hidden;
+    // text-overflow: ellipsis;
+    hyphens: auto;
+}
+.newsContainer {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+    border-radius: 10px;
+
+    &:hover {
+        .desc {
+            top: 0px;
+        }
+    }
+}
+.desc {
+    position: absolute;
+    padding: 0 spacing(2) !important;
+    font-size: $font-size-big;
+    font-family: $font-text;
+    background: rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+    top: 0 !important;
+    transform: translateY(100%);
+    display: block !important;
+    z-index: 999 !important;
+
+    p {
+        padding-top: spacing(2.5);
+    }
+}
+.open {
+    transform: translateY(0);
+}
+
+.closeDesc {
+    position: absolute;
+    right: spacing(0.5) !important;
+    top: spacing(0.5) !important;
+    max-width: unset !important;
+    bottom: unset !important;
+    left: unset !important;
+
+    span {
+        position: relative;
+
+        &::before,
+        &::after {
+            position: absolute;
+            content: "";
+            width: 30px;
+            height: 3px;
+            border-radius: 7px;
+            background: #00897b !important;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+        &::after {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+    }
+}
+
+.dots {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+
+    span {
+        position: relative;
+        &::before,
+        &::after {
+            position: absolute;
+            content: "";
+            width: 30px;
+            height: 3px;
+            border-radius: 7px;
+            background: #00897b !important;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        &::after {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+    }
+}

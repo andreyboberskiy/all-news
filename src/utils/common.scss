@@ -1,0 +1,54 @@
+.text-color-main {
+    color: #ffebee;
+}
+.d-flex {
+    display: flex;
+}
+.jcsb {
+    display: flex;
+    justify-content: space-between;
+}
+.align-center {
+    align-items: center;
+}
+.tac {
+    text-align: center;
+}
+.tar {
+    text-align: right;
+}
+.fw700 {
+    font-weight: 700;
+}
+.fw600 {
+    font-weight: 600;
+}
+.fw500 {
+    font-weight: 500;
+}
+.fw300 {
+    font-weight: 300;
+}
+.ml-auto {
+    margin-left: auto;
+}
+.mr-auto {
+    margin-right: auto;
+}
+.m0-auto {
+    margin: 0 auto;
+}
+.white {
+    color: #000;
+}
+.align-end {
+    align-self: flex-end;
+}
+.flex-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.text-teal-light {
+    color: #e0f2f1;
+}
