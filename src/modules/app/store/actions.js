@@ -40,7 +40,7 @@ export const initAppAction = () => async (dispatch) => {
   try {
     const {
       data: { articles },
-    } = await breakingNewsServices.getNewsByQuery("Україна");
+    } = await breakingNewsServices.getAllNewsByQuery({ query: "Україна" });
 
     dispatch(setStartedNewsAction(articles));
   } catch (e) {

@@ -3,11 +3,12 @@ import errorToastr from "libs/toastr/errorToastr";
 import { toggleLoadingAction } from "modules/app/store/actions";
 import breakingNewsServices from "modules/BreakingNews/breakingNewsServices";
 import { setMainNewsAction } from "modules/MainContainer/NewsContainer/store/actions";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import transformArrayToMap from "utils/transformArrayToMap";
 import M from "materialize-css";
 import classes from "./SearchBar.module.scss";
+import { debounce, throttle } from "lodash";
 
 const initialSearchParams = {
   query: "",
@@ -16,21 +17,47 @@ const initialSearchParams = {
   country: "",
 };
 
+const initialMeta = {
+  offset: 20,
+  hasMore: true,
+  limit: 10,
+};
+
+const emptyMeta = {
+  offset: 0,
+  hasMore: true,
+  limit: 10,
+};
+
 const SearchBar = ({ setMainNews, setLoading }) => {
-  const [seachValue, setSearchValue] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [searchParams, setSearchParams] = useState(initialSearchParams);
+  const [meta, setMeta] = useState(initialMeta);
 
   const [languageNode, languageRef] = useCallbackRef();
   const [countryNode, countryRef] = useCallbackRef();
   const [categoryNode, categoryRef] = useCallbackRef();
 
-  const handleChange = useCallback(({ currentTarget }) => {
-    setSearchValue(currentTarget.value);
-    setSearchParams((prevState) => ({
-      ...prevState,
-      query: currentTarget.value,
-    }));
-  }, []);
+  const triggerOnChange = useCallback(
+    debounce((value) => {
+      setSearchParams((prevState) => ({
+        ...prevState,
+        query: value,
+      }));
+      setMeta((prev) => ({ ...prev, offset: 0 }));
+    }, 1000),
+    []
+  );
+
+  const handleChangeSearchInput = useCallback(
+    ({ currentTarget }) => {
+      setSearchQuery(currentTarget.value);
+
+      triggerOnChange(currentTarget.value);
+    },
+    [triggerOnChange]
+  );
 
   useEffect(() => {
     M.FormSelect.init(languageNode);
@@ -38,56 +65,74 @@ const SearchBar = ({ setMainNews, setLoading }) => {
     M.FormSelect.init(categoryNode);
   }, [languageNode, countryNode, categoryNode]);
 
-  const handleSubmit = useCallback(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const {
-          data: { articles },
-        } = await breakingNewsServices.getNews(searchParams);
+  const loadFirst = useCallback(async () => {
+    setLoading(true);
 
-        if (!articles.length) {
-          setMainNews({ query: seachValue, searchResult: 0 });
-        }
-        if (articles.length) {
-          setMainNews({
-            library: transformArrayToMap(articles),
-            query: seachValue,
-            searchResult: 1,
-          });
-        }
-        setLoading(false);
-      } catch (e) {
-        errorToastr("Error", e.message);
+    try {
+      const {
+        data: { articles },
+      } = await breakingNewsServices.getNewsBySearchParams(searchParams);
+
+      if (!articles.length) {
+        setMainNews({ query: searchQuery, searchResult: 0 });
       }
-    })();
-  }, [seachValue, searchParams, setMainNews]);
+      if (articles.length) {
+        setMainNews({
+          library: transformArrayToMap(articles),
+          query: searchQuery,
+          searchResult: 1,
+        });
+      }
+    } catch (e) {
+      errorToastr("Error", e.message);
+    }
+    setLoading(false);
+  }, [searchParams, searchQuery, setLoading, setMainNews]);
+
+  const handleSubmit = useCallback(async () => {
+    setMeta(emptyMeta);
+  }, []);
 
   const handleChangeSearchParams = useCallback(
-    (e) => {
+    async (e) => {
+      let newParam = {};
+      if (!searchParams.query.length) {
+        newParam.query = "All";
+      }
+
       const type = e.target.dataset.cat;
       const value = e.target.value;
-      const newParam = { [type]: value };
+      newParam = { ...newParam, [type]: value };
       setSearchParams((prevState) => ({ ...prevState, ...newParam }));
-      handleSubmit();
+      setMeta(emptyMeta);
     },
-    [handleSubmit]
+    [searchParams]
   );
 
   const handleKey = useCallback(
-    (e) => {
+    async (e) => {
       if (e.keyCode === 13) {
-        handleSubmit();
+        await handleSubmit();
       }
     },
     [handleSubmit]
   );
+
+  useEffect(() => {
+    if (meta.offset !== 0 || searchParams.query.length === 0) {
+      return;
+    }
+    (async () => {
+      await loadFirst();
+    })();
+  }, [meta, searchParams, loadFirst]);
+
   return (
     <div className={classes.root}>
       <input
         type="text"
-        value={seachValue}
-        onChange={handleChange}
+        value={searchQuery}
+        onChange={handleChangeSearchInput}
         style={{ padding: "16px 24px 16px 50px", height: "auto" }}
         placeholder='Уведіть запит, наприклад "Новини в Запоріжжі" '
         onKeyUp={handleKey}
@@ -101,14 +146,13 @@ const SearchBar = ({ setMainNews, setLoading }) => {
 
       <div className="mt-2 jcsb">
         <div className={`${classes.filter} input-field"`}>
+          <span>Категорія</span>
+
           <select
             ref={categoryRef}
             onChange={handleChangeSearchParams}
             data-cat="category"
           >
-            <option value="" disabled selected>
-              Категорія
-            </option>
             <option value="general">Загальне</option>
             <option value="business">Бізнес</option>
             <option value="entertainment">Розваги</option>
@@ -117,34 +161,31 @@ const SearchBar = ({ setMainNews, setLoading }) => {
             <option value="sports">Спорт</option>
             <option value="technology">Технології</option>
           </select>
-          <label>Категорія</label>
         </div>
         <div className={`${classes.filter} input-field"`}>
+          <span>Мова</span>
+
           <select
             ref={languageRef}
             onChange={handleChangeSearchParams}
             data-cat="language"
           >
-            <option value="" disabled selected>
-              Мова
-            </option>
             <option value="">Усі</option>
+            <option value="ua">Україна</option>
             <option value="de">Німецька</option>
             <option value="en">Англійська</option>
             <option value="ru">Російська</option>
             <option value="it">Італійська</option>
           </select>
-          <label>Мова</label>
         </div>
         <div className={`${classes.filter} input-field"`}>
+          <span>Країна</span>
+
           <select
             ref={countryRef}
             onChange={handleChangeSearchParams}
             data-cat="country"
           >
-            <option value="" disabled selected>
-              Країна
-            </option>
             <option value="">Усі</option>
             <option value="ua">Україна</option>
             <option value="ru">Росія</option>
@@ -154,7 +195,6 @@ const SearchBar = ({ setMainNews, setLoading }) => {
             <option value="cz">Чехія</option>
             <option value="be">Білорусь</option>
           </select>
-          <label>Країна</label>
         </div>
       </div>
     </div>

@@ -9,10 +9,32 @@ const breakingNewsServices = {
     );
   },
 
-  getNews({ query = "", category = "", language = "", country = "" }) {
+  getNewsBySearchParams({
+    query = "All",
+    category = "",
+    language = "",
+    country = "",
+  }) {
+    const withChecking = (string, item) => {
+      if (item.length > 0) {
+        return `&${string}=${item}`;
+      }
+      return "";
+    };
+
     return baseAxiosInstance.get(
-      `everything?q=${query}&category=${category}&language=${language}&country=${country}&apiKey=${apiKey}`
+      `top-headlines?q=${query}${withChecking(
+        "category",
+        category
+      )}${withChecking("language", language)}${withChecking(
+        "country",
+        country
+      )}&pageSize=20&apiKey=${apiKey}`
     );
+  },
+
+  getAllNewsByQuery({ query }) {
+    return baseAxiosInstance.get(`everything?q=${query}&apiKey=${apiKey}`);
   },
 };
 
