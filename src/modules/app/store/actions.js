@@ -6,9 +6,10 @@ import {
   getBreakingNewsAction,
   setBreakingNewsAction,
 } from "modules/BreakingNews/store/actions";
-import { setStartedNewsAction } from "modules/MainContainer/NewsContainer/store/actions";
+
 import { setSavedNotesAction } from "modules/Notes/store/actions";
 import { setSavedNewsAction } from "modules/Saved/store/actions";
+import { setMainNewsAction } from "modules/MainContainer/NewsContainer/store/actions";
 
 export const setInitedAction = () => ({
   type: SET_INITED,
@@ -42,7 +43,7 @@ export const initAppAction = () => async (dispatch) => {
       data: { articles },
     } = await breakingNewsServices.getAllNewsByQuery({ query: "Україна" });
 
-    dispatch(setStartedNewsAction(articles));
+    dispatch(setMainNewsAction(articles));
   } catch (e) {
     errorToastr("Error", e.message);
   }

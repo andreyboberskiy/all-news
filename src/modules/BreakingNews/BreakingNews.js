@@ -1,5 +1,5 @@
 import BreakingNewsItem from "modules/BreakingNews/BreakingNewsItem/BreakingNewsItem";
-import React, { useEffect } from "react";
+import React  from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import clsx from "clsx";
 import "swiper/swiper.scss";
@@ -55,8 +55,5 @@ const mapStateToProps = ({ breakingNews: { library } }) => ({
     breakingNewsList: library,
 });
 
-const mapDispatchToProps = {
-    // setBreakingNews: setBreakingNewsAction,
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(BreakingNews);
+export default connect(mapStateToProps, {})(BreakingNews);

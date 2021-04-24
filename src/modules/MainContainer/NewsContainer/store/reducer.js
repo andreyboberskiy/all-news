@@ -1,13 +1,27 @@
 import {
   SET_MAIN_NEWS,
-  SET_STARTED_NEWS,
+  UPDATE_MAIN_NEWS_META,
+  UPDATE_MAIN_NEWS_SEARCHPARAMS,
 } from "modules/MainContainer/NewsContainer/store/constants";
 
-const initialState = {
-  library: [],
+const initialSearchParams = {
   query: "",
-  searchResult: 0,
-  startedNews: [],
+  category: "",
+  language: "",
+  country: "",
+};
+
+const initialMeta = {
+  hasMore: true,
+  offset: 0,
+  limit: 20,
+  loading: false,
+};
+
+const initialState = {
+  list: [],
+  searchParams: initialSearchParams,
+  meta: initialMeta,
 };
 
 const mainNewsReducer = (state = initialState, { type, payload }) => {
@@ -15,17 +29,21 @@ const mainNewsReducer = (state = initialState, { type, payload }) => {
     case SET_MAIN_NEWS: {
       return {
         ...state,
-        startedNews: [],
-        ...payload,
+        list: payload,
       };
     }
-    case SET_STARTED_NEWS: {
+    case UPDATE_MAIN_NEWS_META: {
       return {
         ...state,
-        startedNews: payload,
+        meta: { ...state.meta, ...payload },
       };
     }
-
+    case UPDATE_MAIN_NEWS_SEARCHPARAMS: {
+      return {
+        ...state,
+        searchParams: { ...state.searchParams, ...payload },
+      };
+    }
     default:
       return state;
   }

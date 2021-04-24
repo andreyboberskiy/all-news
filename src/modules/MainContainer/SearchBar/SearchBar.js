@@ -1,53 +1,55 @@
 import useCallbackRef from "hooks/useRefCallback";
-import errorToastr from "libs/toastr/errorToastr";
-import { toggleLoadingAction } from "modules/app/store/actions";
-import breakingNewsServices from "modules/BreakingNews/breakingNewsServices";
-import { setMainNewsAction } from "modules/MainContainer/NewsContainer/store/actions";
-import React, { useCallback, useEffect, useState } from "react";
+import {
+  updateMetaAction,
+  updateSearchParamsAction,
+} from "modules/MainContainer/NewsContainer/store/actions";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import transformArrayToMap from "utils/transformArrayToMap";
 import M from "materialize-css";
 import classes from "./SearchBar.module.scss";
-import { debounce, throttle } from "lodash";
+import { debounce } from "lodash";
 
-const initialSearchParams = {
-  query: "",
-  category: "",
-  language: "",
-  country: "",
-};
-
-const initialMeta = {
-  offset: 20,
-  hasMore: true,
-  limit: 10,
-};
-
-const emptyMeta = {
-  offset: 0,
-  hasMore: true,
-  limit: 10,
-};
-
-const SearchBar = ({ setMainNews, setLoading }) => {
+const SearchBar = ({ updateSearchParams, updateMeta, searchParams }) => {
   const [searchQuery, setSearchQuery] = useState("");
-
-  const [searchParams, setSearchParams] = useState(initialSearchParams);
-  const [meta, setMeta] = useState(initialMeta);
+  const searchInputRef = useRef();
 
   const [languageNode, languageRef] = useCallbackRef();
   const [countryNode, countryRef] = useCallbackRef();
   const [categoryNode, categoryRef] = useCallbackRef();
 
+  useEffect(() => {
+    M.FormSelect.init(languageNode);
+    M.FormSelect.init(countryNode);
+    M.FormSelect.init(categoryNode);
+  }, [languageNode, countryNode, categoryNode]);
+
+  console.dir(categoryNode);
+
+  const clearAndFocusSearchInput = () => {
+    console.log("EVENT SUCCES");
+    setSearchQuery("");
+    searchInputRef?.current?.focus();
+
+    [languageNode, countryNode, categoryNode].forEach((option) => {
+      option[0].selected = true;
+    });
+  };
+
+  useEffect(() => {
+    document.addEventListener("CLEAR_INPUT", clearAndFocusSearchInput);
+
+    return () => {
+      document.removeEventListener("CLEAR_INPUT", clearAndFocusSearchInput);
+    };
+  }, []);
+
   const triggerOnChange = useCallback(
+    //  eslint-disable-next-line
     debounce((value) => {
-      setSearchParams((prevState) => ({
-        ...prevState,
-        query: value,
-      }));
-      setMeta((prev) => ({ ...prev, offset: 0 }));
-    }, 1000),
-    []
+      updateSearchParams({ query: value });
+      updateMeta({ offset: 0, hasMore: true });
+    }, 2000),
+    [updateSearchParams, updateMeta]
   );
 
   const handleChangeSearchInput = useCallback(
@@ -59,54 +61,24 @@ const SearchBar = ({ setMainNews, setLoading }) => {
     [triggerOnChange]
   );
 
-  useEffect(() => {
-    M.FormSelect.init(languageNode);
-    M.FormSelect.init(countryNode);
-    M.FormSelect.init(categoryNode);
-  }, [languageNode, countryNode, categoryNode]);
+  const handleSubmit = useCallback(() => {
+    updateSearchParams({ query: searchQuery });
+    updateMeta({ offset: 0, hasMore: true });
+  }, [updateMeta, updateSearchParams]);
 
-  const loadFirst = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      const {
-        data: { articles },
-      } = await breakingNewsServices.getNewsBySearchParams(searchParams);
-
-      if (!articles.length) {
-        setMainNews({ query: searchQuery, searchResult: 0 });
-      }
-      if (articles.length) {
-        setMainNews({
-          library: transformArrayToMap(articles),
-          query: searchQuery,
-          searchResult: 1,
-        });
-      }
-    } catch (e) {
-      errorToastr("Error", e.message);
-    }
-    setLoading(false);
-  }, [searchParams, searchQuery, setLoading, setMainNews]);
-
-  const handleSubmit = useCallback(async () => {
-    setMeta(emptyMeta);
-  }, []);
-
-  const handleChangeSearchParams = useCallback(
-    async (e) => {
-      let newParam = {};
-      if (!searchParams.query.length) {
-        newParam.query = "All";
-      }
-
+  const handleChangeSelect = useCallback(
+    (e) => {
       const type = e.target.dataset.cat;
       const value = e.target.value;
-      newParam = { ...newParam, [type]: value };
-      setSearchParams((prevState) => ({ ...prevState, ...newParam }));
-      setMeta(emptyMeta);
+
+      const newParam = { [type]: value };
+      updateSearchParams(newParam);
+
+      if (searchParams.query.length !== 0) {
+        updateMeta({ offset: 0, hasMore: true });
+      }
     },
-    [searchParams]
+    [searchParams, updateSearchParams]
   );
 
   const handleKey = useCallback(
@@ -118,20 +90,12 @@ const SearchBar = ({ setMainNews, setLoading }) => {
     [handleSubmit]
   );
 
-  useEffect(() => {
-    if (meta.offset !== 0 || searchParams.query.length === 0) {
-      return;
-    }
-    (async () => {
-      await loadFirst();
-    })();
-  }, [meta, searchParams, loadFirst]);
-
   return (
     <div className={classes.root}>
       <input
         type="text"
         value={searchQuery}
+        ref={searchInputRef}
         onChange={handleChangeSearchInput}
         style={{ padding: "16px 24px 16px 50px", height: "auto" }}
         placeholder='Уведіть запит, наприклад "Новини в Запоріжжі" '
@@ -150,7 +114,7 @@ const SearchBar = ({ setMainNews, setLoading }) => {
 
           <select
             ref={categoryRef}
-            onChange={handleChangeSearchParams}
+            onChange={handleChangeSelect}
             data-cat="category"
           >
             <option value="general">Загальне</option>
@@ -167,7 +131,7 @@ const SearchBar = ({ setMainNews, setLoading }) => {
 
           <select
             ref={languageRef}
-            onChange={handleChangeSearchParams}
+            onChange={handleChangeSelect}
             data-cat="language"
           >
             <option value="">Усі</option>
@@ -183,7 +147,7 @@ const SearchBar = ({ setMainNews, setLoading }) => {
 
           <select
             ref={countryRef}
-            onChange={handleChangeSearchParams}
+            onChange={handleChangeSelect}
             data-cat="country"
           >
             <option value="">Усі</option>
@@ -201,7 +165,11 @@ const SearchBar = ({ setMainNews, setLoading }) => {
   );
 };
 
-export default connect(null, {
-  setMainNews: setMainNewsAction,
-  setLoading: toggleLoadingAction,
+const mapStateToProps = ({ mainNews: { searchParams } }) => ({
+  searchParams,
+});
+
+export default connect(mapStateToProps, {
+  updateSearchParams: updateSearchParamsAction,
+  updateMeta: updateMetaAction,
 })(SearchBar);
