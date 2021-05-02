@@ -26,7 +26,6 @@ const SearchBar = ({ updateSearchParams, updateMeta, searchParams }) => {
   console.dir(categoryNode);
 
   const clearAndFocusSearchInput = () => {
-    console.log("EVENT SUCCES");
     setSearchQuery("");
     searchInputRef?.current?.focus();
 

@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 import MainContainer from "modules/MainContainer/MainContainer";
 import ReduxToastr from "react-redux-toastr";
 import { Route, Switch } from "react-router-dom";
-import Settings from "modules/Settings/Settings";
 import routesByName from "routes/routesByName";
 import Page404 from "modules/Page404";
 import "materialize-css";
@@ -13,6 +12,7 @@ import { connect, Provider } from "react-redux";
 import { initAppAction } from "modules/app/store/actions";
 import Preloader from "components/Preloader/Preloader";
 import Saved from "./modules/Saved/Saved";
+import ExchangePage from "modules/ExchangePage/ExchangePage";
 const App = ({ initApp, appInited }) => {
   useEffect(() => {
     initApp();
@@ -29,8 +29,8 @@ const App = ({ initApp, appInited }) => {
               <BreakingNews />
               <MainContainer />
             </Route>
-            <Route exact path={routesByName.settings}>
-              <Settings />
+            <Route exact path={routesByName.exchange}>
+              <ExchangePage />
             </Route>
             <Route exact path={routesByName.saved}>
               <Saved />

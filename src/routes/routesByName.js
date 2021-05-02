@@ -1,6 +1,6 @@
 const routesByName = {
   home: "/home",
-  settings: "/settings",
+  exchange: "/exchange",
   saved: "/saved",
   notes: "/notes",
 };

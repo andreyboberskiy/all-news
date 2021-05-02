@@ -39,9 +39,13 @@ const Header = (props) => {
                 </NavLink>
               </li>
               <li className="tac col s4">
-                <a href="#" className="fz-2">
-                  <i className="material-icons">settings</i>
-                </a>
+                <NavLink
+                  to={routesByName.exchange}
+                  className="fz-2"
+                  activeClassName={classes.activeLink}
+                >
+                  Курс валют
+                </NavLink>
               </li>
             </ul>
           </div>

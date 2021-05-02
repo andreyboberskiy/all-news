@@ -33,7 +33,6 @@ const NewsContainer = ({
 
   const handleDispatchClearInput = useCallback(() => {
     const event = new Event("CLEAR_INPUT", { bubbles: true });
-    console.log(event);
     document.dispatchEvent(event);
   }, []);
 
