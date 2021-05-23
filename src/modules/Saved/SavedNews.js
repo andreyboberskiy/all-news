@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { _v } from "utils/short";
 import classes from "./Saved.module.scss";
 
-const Saved = ({ newsList, onDeleteNews }) => {
+const SavedNews = ({ newsList, onDeleteNews }) => {
   return (
     <div className={classes.root}>
       <div className={classes.title}>Збережені новини</div>
@@ -29,4 +29,4 @@ const mapStateToProps = ({ savedNews: { listMap } }) => ({
 });
 export default connect(mapStateToProps, {
   onDeleteNews: deleteSavedNewsAction,
-})(Saved);
+})(SavedNews);

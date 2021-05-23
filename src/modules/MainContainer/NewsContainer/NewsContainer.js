@@ -127,13 +127,16 @@ const NewsContainer = ({
             className="tac font-weight-bold m0-auto"
             style={{ fontSize: 30 }}
           >
-            <div> Нічого не знайдено за заданими параметрами</div>
-            <div
-              className="text-color-main cup"
-              onClick={handleSetNewsByDefaultQuery}
-            >
-              Спробуйте ще раз
-            </div>
+            {
+              // <div> Нічого не знайдено за заданими параметрами</div>
+              // <div
+              //   className="text-color-main cup"
+              //   onClick={handleSetNewsByDefaultQuery}
+              // >
+              //   Спробуйте ще раз
+              // </div>
+            }
+
             {searchParams.query.length && secondaryNews.length > 0 ? (
               <>
                 <div>

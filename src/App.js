@@ -11,7 +11,7 @@ import "materialize-css";
 import { connect, Provider } from "react-redux";
 import { initAppAction } from "modules/app/store/actions";
 import Preloader from "components/Preloader/Preloader";
-import Saved from "./modules/Saved/Saved";
+import Saved from "modules/Saved/SavedNews";
 import ExchangePage from "modules/ExchangePage/ExchangePage";
 const App = ({ initApp, appInited }) => {
   useEffect(() => {

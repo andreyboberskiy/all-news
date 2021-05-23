@@ -18,17 +18,15 @@ export const setInitedAction = () => ({
 export const initAppAction = () => async (dispatch) => {
   dispatch(toggleLoadingAction(true));
 
-  const breakingNews = localStorage.getItem(localStorageKeys.breakingNews);
+  // const breakingNews = localStorage.getItem(localStorageKeys.breakingNews);
   const savedNews = localStorage.getItem(localStorageKeys.savedNews);
   const savedNotes = localStorage.getItem(localStorageKeys.notes);
 
-  if (breakingNews) {
-    dispatch(setBreakingNewsAction(Object.values(JSON.parse(breakingNews))));
-  }
+  // if (breakingNews) {
+  //   dispatch(setBreakingNewsAction(Object.values(JSON.parse(breakingNews))));
+  // }
 
-  if (!breakingNews) {
-    dispatch(getBreakingNewsAction());
-  }
+  dispatch(getBreakingNewsAction());
 
   if (savedNews) {
     dispatch(setSavedNewsAction(JSON.parse(savedNews)));

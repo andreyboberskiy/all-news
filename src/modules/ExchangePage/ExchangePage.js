@@ -121,9 +121,8 @@ const ExchangePage = () => {
         borderColor: backgroundColor,
       };
     });
-
     const dataForCanvas = {
-      labels: Object.keys(showingCourses["EUR"]),
+      labels: Object.keys(showingCourses["EUR"]).reverse(),
       datasets: preparedDatasets,
     };
 
